@@ -1,0 +1,5 @@
+# config.py
+WIDTH = 800
+HEIGHT = 600
+PLAYER_SPEED = 4
+ENEMY_SPEED = 2
