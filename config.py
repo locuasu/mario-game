@@ -7,7 +7,9 @@ STAR_TIME = 10
 STAR_SPEED = 4
 
 
-
+# Valores de puntuación 
+POINTS_KILL_ENEMY = 100
+POINTS_COLLECT_STAR = 50
 
 
 

@@ -1,10 +1,11 @@
 #  main.py
 import pgzrun
-from config import WIDTH, HEIGHT, STAR_TIME 
+from config import WIDTH, HEIGHT, STAR_TIME, POINTS_COLLECT_STAR, POINTS_KILL_ENEMY
 from player import player, update_player, draw_player, keyboard
 from enemies import enemies, update_enemies, draw_enemies
 from star import star, draw_star, respawn_star, update_star
 from game_state import GameState
+from score_system import add_score
 game = GameState()
 
 def disable_star():
@@ -22,6 +23,7 @@ def update():
     if star.visible and player.colliderect(star):
         star.visible = False
         game.invincible = True
+        add_score(game, POINTS_COLLECT_STAR)
         clock.schedule_unique(disable_star, STAR_TIME)    
 
 def draw():
@@ -38,6 +40,12 @@ def draw():
         topleft=(10, 10),
         fontsize=40,
         color="white"
+    )
+    screen.draw.text(
+        f"score: {game.score}",
+        topright=(WIDTH - 10, 10),
+        fontsize=40,
+        color="cyan"
     )
     if game.invincible:
         screen.draw.text(
@@ -66,6 +74,7 @@ def check_collisions():
             if game.invincible:
                 # Respawn enemigo
                 e.pos = (1000, -100)
+                add_score(game, POINTS_KILL_ENEMY)
                 return
             game.lives -= 1
             print("Colisión! Vidas restantes:", game.lives)
@@ -83,6 +92,6 @@ def respawn_game():
     game.running = True
     game.invincible= False
     respawn_star()
-    
+    game.score = 0
 
 pgzrun.go()
