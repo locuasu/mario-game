@@ -2,4 +2,22 @@
 WIDTH = 800
 HEIGHT = 600
 PLAYER_SPEED = 4
-ENEMY_SPEED = 2
+ENEMY_SPEED = 6
+STAR_TIME = 10
+STAR_SPEED = 4
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
