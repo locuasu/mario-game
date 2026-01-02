@@ -29,6 +29,7 @@ def draw():
     screen.blit("fondo", (0, 0))
     draw_player()
     draw_enemies()
+    draw_star()
     # ---------------------------
     # ✨ MOSTRAR VIDAS EN PANTALLA
     # ---------------------------
