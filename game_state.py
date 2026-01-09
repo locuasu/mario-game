@@ -2,7 +2,7 @@
 class GameState:
     def __init__(self):
         self.score = 0
-        self.running = True
+        self.state = "menu"
         self.lives = 3
         self.invincible = False 
-    
+        
