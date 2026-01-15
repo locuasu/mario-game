@@ -7,6 +7,7 @@ from star import star, draw_star, respawn_star, update_star
 from game_state import GameState
 from score_system import add_score
 from menu import draw_menu, update_menu, on_mouse_down as menu_mouse_down
+from shop import draw_shop, shop_mouse_down
 game = GameState()
 
 def disable_star():
@@ -21,7 +22,8 @@ def update():
         return
 
 
-    update_player()
+    update_player(game)
+    
     update_enemies()
     update_star()
     check_collisions()
@@ -36,13 +38,16 @@ def draw():
     if game.state == "menu":
         draw_menu(screen)
         return
+    if game.state == "shop":
+        draw_shop(screen, game)
+        return
     if game.state == "game":
 
         screen.blit("fondo", (0, 0))
         draw_player()
         draw_enemies()
         draw_star()
-    
+
         # ---------------------------
         # ✨ MOSTRAR VIDAS EN PANTALLA
         # ---------------------------
@@ -109,9 +114,13 @@ def on_mouse_down(pos, button):
     if game.state == "menu":
         menu_mouse_down(pos, button, game)
 
+    elif game.state == "shop":
+        shop_mouse_down(pos, game)
+
     elif game.state == "game_over":
         respawn_game()
         game.state = "menu"
+    
 
  
 def respawn_game():
@@ -119,6 +128,6 @@ def respawn_game():
     game.lives = 3
     game.invincible= False
     respawn_star()
-    game.score = 0
+    
 
 pgzrun.go()

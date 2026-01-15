@@ -5,4 +5,36 @@ class GameState:
         self.state = "menu"
         self.lives = 3
         self.invincible = False 
+
+# -------------------------
+        # 🎨 SISTEMA DE SKINS
+        # -------------------------
+        self.current_skin = "player"
+        self.owned_skins = ["player"]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         
