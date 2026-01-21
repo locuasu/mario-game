@@ -1,4 +1,4 @@
-from shop_data import SKINS
+from shop_data import SKINS, ITEMS
 
 def buy_skin(game, skin_name):
     skin = SKINS[skin_name]
@@ -14,7 +14,12 @@ def buy_skin(game, skin_name):
         game.owned_skins.append(skin_name)
         game.current_skin = skin_name
 
-
+def buy_item(game, item_name):
+    item = ITEMS[item_name]
+    # Comprar
+    if game.score >= item["price"]:
+        game.score -= item["price"]
+        game.lives += 1 
 def draw_shop(screen, game):
     screen.clear()
     screen.draw.text("TIENDA DE SKINS", center=(300, 50), fontsize=50, color="white")
@@ -23,7 +28,9 @@ def draw_shop(screen, game):
         center =(300, 100),
         fontsize=35,
         color="cyan"
+    
     )
+    
     y = 120
     for skin_name in SKINS:
         skin = SKINS[skin_name]
@@ -40,7 +47,18 @@ def draw_shop(screen, game):
             color="yellow" if skin_name == game.current_skin else "white"
         )
         y += 50
+    # ────────────────
+    # 🧡 VIDA EXTRA
+    # ────────────────
+    y += 20
+    item = ITEMS["vida_extra"]
 
+    screen.draw.text(
+        "VIDA EXTRA +1 - " + str(item["price"]) + " pts",
+        center=(300, y),
+        fontsize=35,
+        color="red"
+    )
     screen.draw.text(
         "Click para comprar / equipar",
         center=(300, 350),
@@ -66,7 +84,10 @@ def shop_mouse_down(pos, game):
             buy_skin(game, skin_name)
             return
         y += 50
-
+    y += 20
+    if y - 20 < y < y + 20:
+        buy_item(game, "vida_extra")
+        return
 
 
 

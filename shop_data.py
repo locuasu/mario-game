@@ -18,7 +18,13 @@ SKINS = {
     }
 }
 
-
+# 🧡 ÍTEMS ESPECIALES
+ITEMS = {
+    "vida_extra": {
+        "image": "vida_extra",
+        "price": 30
+    }
+}       
 
 
 
