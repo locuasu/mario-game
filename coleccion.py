@@ -43,11 +43,15 @@ def equip_skin(game, skin_name):
         return
 
 def coleccion_mouse_down(pos, game):
-    x, y = pos
-    if 200 < x < 400 and 360 < y < 410:
+    x, y_click = pos
+    if 200 < x < 400 and 360 < y_click < 410:
         game.state = "menu"
-    for skin_name in SKINS:
-        if 100 < pos[1] < y + 20:
-            equip_skin(game, skin_name)
+    y = 120
+    for skin_name in game.owned_skins:
+        if skin_name not in SKINS:
+            continue
+        if y - 20 < y_click < y + 20:
+            game.current_skin = skin_name
+            print("Skin equipada:", skin_name)
             return
-        y += 50
+        y += 45
