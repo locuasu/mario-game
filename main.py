@@ -8,6 +8,7 @@ from game_state import GameState
 from score_system import add_score
 from menu import draw_menu, update_menu, on_mouse_down as menu_mouse_down
 from shop import draw_shop, shop_mouse_down
+from coleccion import draw_coleccion, coleccion_mouse_down
 game = GameState()
 
 def disable_star():
@@ -20,7 +21,7 @@ def update():
 
     if game.state != "game":
         return
-
+    
 
     update_player(game)
     
@@ -40,6 +41,9 @@ def draw():
         return
     if game.state == "shop":
         draw_shop(screen, game)
+        return
+    elif game.state == "coleccion":
+        draw_coleccion(screen, game)
         return
     if game.state == "game":
 
@@ -117,6 +121,8 @@ def on_mouse_down(pos, button):
     elif game.state == "shop":
         shop_mouse_down(pos, game)
 
+    elif game.state == "coleccion":
+        coleccion_mouse_down(pos, game)
     elif game.state == "game_over":
         respawn_game()
         game.state = "menu"

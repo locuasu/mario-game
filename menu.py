@@ -41,7 +41,7 @@ def on_mouse_down(pos, button, game):
             elif i == 1:
                 game.state = "shop"
             elif i == 2:
-                game.state = "collection"
+                game.state = "coleccion"
 
 
 
