@@ -11,7 +11,8 @@ class GameState:
         # -------------------------
         self.current_skin = "player"
         self.owned_skins = ["player"]
-
+        # 🔫 disparo
+        self.can_shoot = True
 
 
 

@@ -9,12 +9,15 @@ from score_system import add_score
 from menu import draw_menu, update_menu, on_mouse_down as menu_mouse_down
 from shop import draw_shop, shop_mouse_down
 from coleccion import draw_coleccion, coleccion_mouse_down
-game = GameState()
+from bullet import shoot, update_bullets, draw_bullets
 
+game = GameState()
+shoot_cooldown = 0
 def disable_star():
     game.invincible = False
     print("ivencibilidad acabada:(")
 def update():
+    global shoot_cooldown
     if game.state == "menu":
         update_menu(game)
         return
@@ -24,9 +27,16 @@ def update():
     
 
     update_player(game)
-    
+    # 🔫 DISPARO
+    if game.can_shoot:
+        if shoot_cooldown > 0:
+            shoot_cooldown -= 1
+        elif keyboard.space:
+            shoot(player)
+            shoot_cooldown = 15  # frames entre disparos
     update_enemies()
     update_star()
+    update_bullets()
     check_collisions()
 
     if star.visible and player.colliderect(star):
@@ -42,6 +52,7 @@ def draw():
     if game.state == "shop":
         draw_shop(screen, game)
         return
+    
     elif game.state == "coleccion":
         draw_coleccion(screen, game)
         return
@@ -51,7 +62,7 @@ def draw():
         draw_player()
         draw_enemies()
         draw_star()
-
+        draw_bullets()
         # ---------------------------
         # ✨ MOSTRAR VIDAS EN PANTALLA
         # ---------------------------
@@ -94,7 +105,7 @@ def draw():
             fontsize=40,
             color="yellow"
         )
-    
+from bullet import bullets 
 def check_collisions():
     for e in enemies:
         if player.colliderect(e):
@@ -112,7 +123,14 @@ def check_collisions():
             # Si se quedaron sin vidas => perder
             if game.lives <= 0:
                 game.state = "game_over"
-
+    # 🔫 bala vs enemigo
+    for bullet in bullets[:]:
+        for e in enemies:
+            if bullet.colliderect(e):
+                bullets.remove(bullet)
+                e.pos = (1000, -100)
+                add_score(game, POINTS_KILL_ENEMY)
+                break
 
 def on_mouse_down(pos, button):
     if game.state == "menu":

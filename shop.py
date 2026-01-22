@@ -1,5 +1,8 @@
 from shop_data import SKINS, ITEMS
+from pgzero.actor import Actor
 
+
+bala_actor = Actor("bala", pos=(400, 280))
 def buy_skin(game, skin_name):
     skin = SKINS[skin_name]
 
@@ -13,13 +16,20 @@ def buy_skin(game, skin_name):
         game.score -= skin["price"]
         game.owned_skins.append(skin_name)
         game.current_skin = skin_name
-
 def buy_item(game, item_name):
     item = ITEMS[item_name]
-    # Comprar
-    if game.score >= item["price"]:
-        game.score -= item["price"]
-        game.lives += 1 
+
+    if game.score < item["price"]:
+        return
+
+    game.score -= item["price"]
+
+    if item_name == "vida_extra":
+        game.lives += 1
+
+    elif item_name == "bala":
+        game.can_shoot = True
+
 def draw_shop(screen, game):
     screen.clear()
     screen.draw.text("TIENDA DE SKINS", center=(300, 50), fontsize=50, color="white")
@@ -59,6 +69,14 @@ def draw_shop(screen, game):
         fontsize=35,
         color="red"
     )
+      # 🔫 BALA
+    bala_actor.draw()
+    screen.draw.text(
+        "DISPARO",
+        center=(400, 330),
+        fontsize=25,
+        color="yellow"
+    )  
     screen.draw.text(
         "Click para comprar / equipar",
         center=(300, 350),
@@ -88,7 +106,10 @@ def shop_mouse_down(pos, game):
     if y - 20 < y < y + 20:
         buy_item(game, "vida_extra")
         return
-
+        # 🔫 comprar bala
+    if bala_actor.collidepoint(pos):
+        buy_item(game, "bala")
+        return
 
 
 

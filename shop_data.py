@@ -22,8 +22,12 @@ SKINS = {
 ITEMS = {
     "vida_extra": {
         "image": "vida_extra",
-        "price": 30
-    }
+        "price": 30,
+    },
+    "bala": {
+        "image": "bala",
+        "price": 300
+    }  
 }       
 
 
