@@ -1,7 +1,7 @@
 # game_state.py
 class GameState:
     def __init__(self):
-        self.score = 0
+        self.score = 10000000
         self.state = "menu"
         self.lives = 3
         self.invincible = False 
@@ -12,7 +12,8 @@ class GameState:
         self.current_skin = "player"
         self.owned_skins = ["player"]
         # 🔫 disparo
-        self.can_shoot = True
+        self.can_shoot = False
+        self.shoot_cooldown = 0
 
 
 

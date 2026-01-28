@@ -12,7 +12,7 @@ from coleccion import draw_coleccion, coleccion_mouse_down
 from bullet import shoot, update_bullets, draw_bullets
 
 game = GameState()
-shoot_cooldown = 0
+
 def disable_star():
     game.invincible = False
     print("ivencibilidad acabada:(")
@@ -29,11 +29,11 @@ def update():
     update_player(game)
     # 🔫 DISPARO
     if game.can_shoot:
-        if shoot_cooldown > 0:
-            shoot_cooldown -= 1
+        if game.shoot_cooldown > 0:
+            game.shoot_cooldown  -= 1
         elif keyboard.space:
             shoot(player)
-            shoot_cooldown = 15  # frames entre disparos
+            game.shoot_cooldown  = 15  # frames entre disparos
     update_enemies()
     update_star()
     update_bullets()
@@ -144,7 +144,7 @@ def on_mouse_down(pos, button):
     elif game.state == "game_over":
         respawn_game()
         game.state = "menu"
-    
+        
 
  
 def respawn_game():
@@ -152,6 +152,7 @@ def respawn_game():
     game.lives = 3
     game.invincible= False
     respawn_star()
-    
+    game.can_shoot = False
+    game.shoot_cooldown = 0
 
 pgzrun.go()

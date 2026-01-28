@@ -2,7 +2,7 @@ from shop_data import SKINS, ITEMS
 from pgzero.actor import Actor
 
 
-bala_actor = Actor("bala", pos=(400, 280))
+bala_actor = Actor("bala", pos=(550, 340))
 def buy_skin(game, skin_name):
     skin = SKINS[skin_name]
 
@@ -60,7 +60,7 @@ def draw_shop(screen, game):
     # ────────────────
     # 🧡 VIDA EXTRA
     # ────────────────
-    y += 20
+    y += 30
     item = ITEMS["vida_extra"]
 
     screen.draw.text(
@@ -73,43 +73,51 @@ def draw_shop(screen, game):
     bala_actor.draw()
     screen.draw.text(
         "DISPARO",
-        center=(400, 330),
+        center=(550, 370),
         fontsize=25,
         color="yellow"
     )  
     screen.draw.text(
         "Click para comprar / equipar",
-        center=(300, 350),
+        center=(300, 450),
         fontsize=30,
         color="cyan"
     )
     # 🔙 BOTÓN VOLVER
     screen.draw.text(
         "VOLVER AL MENÚ",
-        center=(300, 380),
+        center=(300, 420),
         fontsize=35,
         color="cyan"
     )
 
 def shop_mouse_down(pos, game):
-    # Click en botón VOLVER
-    if 360 < pos[1] < 410:
+    mx, my = pos
+
+    # 🔙 VOLVER AL MENÚ
+    if 400 < my < 450:
         game.state = "menu"
         return
+
+    # 🎭 SKINS
     y = 120
     for skin_name in SKINS:
-        if 100 < pos[1] < y + 20:
+        if y - 15 < my < y + 15:
             buy_skin(game, skin_name)
             return
         y += 50
-    y += 20
-    if y - 20 < y < y + 20:
+
+    # 🧡 VIDA EXTRA
+    y += 40
+    if 260 < mx < 340 and y - 20 < my < y + 20:
         buy_item(game, "vida_extra")
         return
-        # 🔫 comprar bala
-    if bala_actor.collidepoint(pos):
+
+    # 🔫 DISPARO (BALA)
+    if 520 < mx < 580 and 320 < my < 360:
         buy_item(game, "bala")
         return
+
 
 
 

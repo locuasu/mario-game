@@ -1,38 +1,60 @@
 from shop_data import SKINS
+from config import WIDTH, HEIGHT
 
 def draw_coleccion(screen, game):
     screen.clear()
-    screen.draw.text("COLECCIÓN DE SKINS", center=(300, 50), fontsize=50, color="white")
 
-    # Si no tiene skins compradas
+    center_x = WIDTH // 2
+    start_y = 120
+    spacing = 45
+
+    # Título
+    screen.draw.text(
+        "COLECCIÓN DE SKINS",
+        center=(center_x, 50),
+        fontsize=50,
+        color="white"
+    )
+
+    # Si no tiene skins
     if not game.owned_skins:
-        screen.draw.text("Aún no tienes skins compradas", center=(300, 200), fontsize=30, color="cyan")
-        screen.draw.text("Ve a la tienda y compra una 😊", center=(300, 240), fontsize=26, color="white")
+        screen.draw.text(
+            "Aún no tienes skins compradas",
+            center=(center_x, HEIGHT // 2),
+            fontsize=30,
+            color="cyan"
+        )
+        screen.draw.text(
+            "Ve a la tienda y compra una 😊",
+            center=(center_x, HEIGHT // 2 + 40),
+            fontsize=26,
+            color="white"
+        )
     else:
-        y = 120
+        y = start_y
         for skin_name in game.owned_skins:
-            # Si por alguna razón el nombre no existe en SKINS, lo saltamos
             if skin_name not in SKINS:
                 continue
 
-            # Texto a mostrar (puedes renombrar bonito)
-            nombre_player = skin_name.upper()
-
-            # Marcar la que está equipada
-            texto = nombre_player
+            texto = skin_name.upper()
             if skin_name == game.current_skin:
                 texto += "  ✅ (EQUIPADA)"
 
             screen.draw.text(
                 texto,
-                center=(300, y),
+                center=(center_x, y),
                 fontsize=30,
                 color="yellow" if skin_name == game.current_skin else "white"
             )
-            y += 45
+            y += spacing
 
-    # Botón volver
-    screen.draw.text("VOLVER", center=(300, 380), fontsize=35, color="cyan")
+    # Botón volver (abajo, centrado)
+    screen.draw.text(
+        "VOLVER",
+        center=(center_x, HEIGHT - 50),
+        fontsize=35,
+        color="cyan"
+    )
 
 def equip_skin(game, skin_name):
     skin = SKINS[skin_name]
@@ -44,14 +66,24 @@ def equip_skin(game, skin_name):
 
 def coleccion_mouse_down(pos, game):
     x, y_click = pos
-    if 200 < x < 400 and 360 < y_click < 410:
+    center_x = WIDTH // 2
+    start_y = 120
+    spacing = 45
+
+    # VOLVER
+    if center_x - 100 < x < center_x + 100 and HEIGHT - 70 < y_click < HEIGHT - 30:
         game.state = "menu"
-    y = 120
+        return
+
+    # Seleccionar skin
+    y = start_y
     for skin_name in game.owned_skins:
         if skin_name not in SKINS:
             continue
+
         if y - 20 < y_click < y + 20:
             game.current_skin = skin_name
             print("Skin equipada:", skin_name)
             return
-        y += 45
+
+        y += spacing
