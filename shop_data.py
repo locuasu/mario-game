@@ -6,16 +6,29 @@ SKINS = {
     },
     "peach": {
         "image": "peach",
-        "price": 50
+        "price": 150
     },
+    
     "luigi": {
         "image": "luigi",
-        "price": 100
+        "price": 350
     },
     "mario_oro": {
         "image": "mario_oro",
-        "price": 100
-    }
+        "price": 500
+    },
+    "rosalina": {
+        "image": "rosalina",
+        "price": 800
+    },
+    "toad": {
+        "image": "toad",
+        "price": 230
+    },
+    "yoshi": {
+        "image": "yoshi",
+        "price": 1000
+    },
 }
 
 # 🧡 ÍTEMS ESPECIALES

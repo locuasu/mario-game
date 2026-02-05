@@ -1,6 +1,6 @@
 from shop_data import SKINS, ITEMS
 from pgzero.actor import Actor
-
+from config import WIDTH, HEIGHT
 
 bala_actor = Actor("bala", pos=(550, 340))
 def buy_skin(game, skin_name):
@@ -32,61 +32,76 @@ def buy_item(game, item_name):
 
 def draw_shop(screen, game):
     screen.clear()
-    screen.draw.text("TIENDA DE SKINS", center=(300, 50), fontsize=50, color="white")
+    screen.blit("fondo_2", (0, 0))
+    center_x = WIDTH // 2
+    y = 120
+    spacing = 40
+
+    # 🏪 TÍTULO
     screen.draw.text(
-        "Puntos: " + str(game.score),
-        center =(300, 100),
+        "TIENDA",
+        center=(center_x, 50),
+        fontsize=50,
+        color="white"
+    )
+
+    # 💰 PUNTOS
+    screen.draw.text(
+        f"Puntos: {game.score}",
+        center=(center_x, 95),
         fontsize=35,
         color="cyan"
-    
     )
-    
-    y = 120
+
+    # 🎭 SKINS
     for skin_name in SKINS:
         skin = SKINS[skin_name]
-
-        text = skin_name + " - " + str(skin["price"]) + " pts"
+        text = f"{skin_name} - {skin['price']} pts"
 
         if skin_name in game.owned_skins:
             text += " (COMPRADA)"
 
         screen.draw.text(
             text,
-            center=(300, y),
+            center=(center_x, y),
             fontsize=30,
             color="yellow" if skin_name == game.current_skin else "white"
         )
-        y += 50
+        y += spacing
+
     # ────────────────
     # 🧡 VIDA EXTRA
     # ────────────────
-    y += 30
+    y += 20
     item = ITEMS["vida_extra"]
 
     screen.draw.text(
-        "VIDA EXTRA +1 - " + str(item["price"]) + " pts",
-        center=(300, y),
+        f"VIDA EXTRA +1 - {item['price']} pts",
+        center=(center_x, y),
         fontsize=35,
         color="red"
     )
-      # 🔫 BALA
+
+    # ────────────────
+    # 🔫 BALA
+    # ────────────────
+    bala_x = center_x 
+    bala_y = y + 70
+
+    bala_actor.pos = (bala_x, bala_y)
     bala_actor.draw()
+
     screen.draw.text(
         "DISPARO",
-        center=(550, 370),
+        center=(bala_x, bala_y + 35),
         fontsize=25,
         color="yellow"
-    )  
-    screen.draw.text(
-        "Click para comprar / equipar",
-        center=(300, 450),
-        fontsize=30,
-        color="cyan"
     )
-    # 🔙 BOTÓN VOLVER
+
+    # 🔙 VOLVER
     screen.draw.text(
         "VOLVER AL MENÚ",
-        center=(300, 420),
+        center=(center_x, HEIGHT - 50),
         fontsize=35,
         color="cyan"
     )
@@ -94,27 +109,33 @@ def draw_shop(screen, game):
 def shop_mouse_down(pos, game):
     mx, my = pos
 
-    # 🔙 VOLVER AL MENÚ
-    if 400 < my < 450:
+    center_x = WIDTH // 2
+    y = 120
+    spacing = 40
+
+    # 🔙 VOLVER
+    if HEIGHT - 70 < my < HEIGHT - 30:
         game.state = "menu"
         return
 
     # 🎭 SKINS
-    y = 120
     for skin_name in SKINS:
-        if y - 15 < my < y + 15:
+        if y - 20 < my < y + 20:
             buy_skin(game, skin_name)
             return
-        y += 50
+        y += spacing
 
     # 🧡 VIDA EXTRA
-    y += 40
-    if 260 < mx < 340 and y - 20 < my < y + 20:
+    y += 20
+    if center_x - 150 < mx < center_x + 150 and y - 25 < my < y + 25:
         buy_item(game, "vida_extra")
         return
 
-    # 🔫 DISPARO (BALA)
-    if 520 < mx < 580 and 320 < my < 360:
+    # 🔫 BALA
+    bala_x = center_x 
+    bala_y = y + 70
+
+    if bala_x - 20 < mx < bala_x + 20 and bala_y - 20 < my < bala_y + 20:
         buy_item(game, "bala")
         return
 

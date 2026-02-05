@@ -3,18 +3,10 @@ from config import WIDTH, HEIGHT
 
 def draw_coleccion(screen, game):
     screen.clear()
-
+    screen.blit("fondo_1", (0, 0))
     center_x = WIDTH // 2
     start_y = 120
     spacing = 45
-
-    # Título
-    screen.draw.text(
-        "COLECCIÓN DE SKINS",
-        center=(center_x, 50),
-        fontsize=50,
-        color="white"
-    )
 
     # Si no tiene skins
     if not game.owned_skins:
@@ -53,7 +45,7 @@ def draw_coleccion(screen, game):
         "VOLVER",
         center=(center_x, HEIGHT - 50),
         fontsize=35,
-        color="cyan"
+        color="black"
     )
 
 def equip_skin(game, skin_name):

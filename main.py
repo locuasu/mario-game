@@ -1,8 +1,8 @@
 #  main.py
 import pgzrun
-from config import WIDTH, HEIGHT, STAR_TIME, POINTS_COLLECT_STAR, POINTS_KILL_ENEMY
+from config import WIDTH, HEIGHT, STAR_TIME, POINTS_COLLECT_STAR, POINTS_KILL_ENEMY, POINTS_DODGE_ENEMY
 from player import player, update_player, draw_player, keyboard
-from enemies import enemies, update_enemies, draw_enemies
+from enemies import enemies, update_enemies, draw_enemies, lasers
 from star import star, draw_star, respawn_star, update_star
 from game_state import GameState
 from score_system import add_score
@@ -34,7 +34,9 @@ def update():
         elif keyboard.space:
             shoot(player)
             game.shoot_cooldown  = 15  # frames entre disparos
-    update_enemies()
+    dodged = update_enemies()
+    if dodged > 0:
+        add_score(game, POINTS_DODGE_ENEMY * dodged)
     update_star()
     update_bullets()
     check_collisions()
@@ -51,6 +53,7 @@ def draw():
         return
     if game.state == "shop":
         draw_shop(screen, game)
+        
         return
     
     elif game.state == "coleccion":
@@ -131,7 +134,13 @@ def check_collisions():
                 e.pos = (1000, -100)
                 add_score(game, POINTS_KILL_ENEMY)
                 break
+    for laser in lasers:
+        if player.colliderect(laser):
+            game.lives -= 1
+            lasers.remove(laser)
 
+        if game.lives <= 0:
+            game.state = "game_over"      
 def on_mouse_down(pos, button):
     if game.state == "menu":
         menu_mouse_down(pos, button, game)
