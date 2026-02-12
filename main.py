@@ -10,12 +10,13 @@ from menu import draw_menu, update_menu, on_mouse_down as menu_mouse_down
 from shop import draw_shop, shop_mouse_down
 from coleccion import draw_coleccion, coleccion_mouse_down
 from bullet import shoot, update_bullets, draw_bullets
-
+import random
 game = GameState()
-
+u = random.randint(3,20)
 def disable_star():
     game.invincible = False
     print("ivencibilidad acabada:(")
+
 def update():
     global shoot_cooldown
     if game.state == "menu":
@@ -46,6 +47,7 @@ def update():
         game.invincible = True
         add_score(game, POINTS_COLLECT_STAR)
         clock.schedule_unique(disable_star, STAR_TIME)  
+        clock.schedule_unique(respawn_star, STAR_TIME + u)  
 
 def draw():
     if game.state == "menu":
@@ -134,8 +136,13 @@ def check_collisions():
                 e.pos = (1000, -100)
                 add_score(game, POINTS_KILL_ENEMY)
                 break
+                
     for laser in lasers:
         if player.colliderect(laser):
+            if game.invincible:
+                # Ignora el daño (opcionalmente destruir el láser)
+                lasers.remove(laser)
+                return
             game.lives -= 1
             lasers.remove(laser)
 

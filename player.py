@@ -21,3 +21,4 @@ def update_player(game):
     player.y = max(half_h, min(HEIGHT - half_h, player.y))
 def draw_player():
     player.draw()
+  

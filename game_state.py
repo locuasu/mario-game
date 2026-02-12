@@ -3,7 +3,7 @@ class GameState:
     def __init__(self):
         self.score = 14276
         self.state = "menu"
-        self.lives = 3
+        self.lives = 32
         self.invincible = False 
 
 # -------------------------
