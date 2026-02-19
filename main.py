@@ -1,7 +1,7 @@
 #  main.py
 import pgzrun
 from config import WIDTH, HEIGHT, STAR_TIME, POINTS_COLLECT_STAR, POINTS_KILL_ENEMY, POINTS_DODGE_ENEMY
-from player import player, update_player, draw_player, keyboard
+from player import player, update_player, draw_player, take_damage, reset_state, keyboard
 from enemies import enemies, update_enemies, draw_enemies, lasers
 from star import star, draw_star, respawn_star, update_star
 from game_state import GameState
@@ -120,6 +120,8 @@ def check_collisions():
                 add_score(game, POINTS_KILL_ENEMY)
                 return
             game.lives -= 1
+            take_damage()
+            clock.schedule_unique(reset_state, 0.3)
             print("Colisión! Vidas restantes:", game.lives)
 
             # Respawn enemigo
@@ -144,6 +146,8 @@ def check_collisions():
                 lasers.remove(laser)
                 return
             game.lives -= 1
+            take_damage()
+            clock.schedule_unique(reset_state, 0.3)
             lasers.remove(laser)
 
         if game.lives <= 0:
